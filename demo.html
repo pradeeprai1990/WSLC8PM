@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modal with Overlay</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    /* Hide by default */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none; /* hide by default */
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 400px;
+      max-width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .show {
+      display: flex;
+    }
+    form{
+     
+      display: flex;
+      flex-direction: column;
+
+    }
+    form input{
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+
+  <button id="openBtn">Open Modal</button>
+
+
+  <div class="overlay" id="overlay">
+
+
+    <div class="modal" id="modal">
+      <h3>Modal Title</h3>
+      <form action="">
+        <input type="text" placeholder="userName">
+        <input type="password" placeholder="Password">
+      </form>
+      <button id="closeBtn">Close</button>
+    </div>
+
+
+
+  </div>
+
+  <script>
+    const openBtn = document.getElementById('openBtn');
+    const overlay = document.getElementById('overlay');
+    const modal = document.getElementById('modal');
+    const closeBtn = document.getElementById('closeBtn');
+
+    // Open modal
+    openBtn.addEventListener('click', () => {
+      overlay.classList.add('show');
+    });
+
+    // Close when clicking on overlay
+    overlay.addEventListener('click', (e) => {
+
+      if(e.target.className=="overlay show"){
+        overlay.classList.remove('show');
+      }
+      // console.log(e.target.className)
+
+     
+     
+    });
+
+    // modal.addEventListener("click",(e)=>{
+    //   e.stopPropagation()
+    // })
+
+   
+    // Optional close button inside modal
+    closeBtn.addEventListener('click', () => {
+      overlay.classList.remove('show');
+    });
+  </script>
+
+</body>
+</html>
