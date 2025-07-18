@@ -1,25 +1,53 @@
-import React from 'react'
+import React, { use } from 'react'
 import "./Home.css" //Link
 import logo from "../../assets/react.svg"
+import Header from '../common/Header'
 export default function Home() {
     let pageTitle = "Home Page"
-    console.log(pageTitle)
+
 
     let status = false
 
 
+    let user = ["Ram", "Ravi", "Raj"]
+
+    let allUser=user.map((value,index)=> <li> {index+1} {value} </li> )
+
     return (
+
+      <> 
+      <Header/>
         <div className="mainSection">
 
             <h1>Discover Solachey</h1>
+            <ol>
+                 {allUser}
+            </ol>
+            <ul>
+                { user.map((value,index)=> <li> {index+1} {value} </li> ) }
+            </ul>
+
+
+            <ul>
+                {
+                    user.map((value, index) => {
+                        return(
+                            <li> {index+1} {value} </li>
+                        )
+                    })
+
+                }
+
+               
+            </ul>
 
             <div className='productMid'>
-                    <ProductItems/>
-                    <ProductItems/>
-                    <ProductItems/>
-                    <ProductItems/>
-                    <ProductItems/>
-                    <ProductItems/>
+                <ProductItems />
+                <ProductItems />
+                <ProductItems />
+                <ProductItems />
+                <ProductItems />
+                <ProductItems />
 
             </div>
 
@@ -50,6 +78,8 @@ export default function Home() {
             {/* </div> */}
 
         </div>
+
+        </> 
     )
 }
 
