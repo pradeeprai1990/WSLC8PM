@@ -12,6 +12,8 @@ function App() {
 
   let cname = "WsCubeTech"
 
+  let user=["Ram","Ravi"]
+
   return (
     <>
       <Header
@@ -20,18 +22,25 @@ function App() {
         email={"pradeep.997@gmail.com"}
 
       />
+    <Header>
+      <h1>Welcome to Demo</h1>
+      <p>Welcome</p>
+    </Header>
+      
+  
 
-      <section className='w-[100%] py-10 bg-lime-300'>
+      <section className='w-[100%] py-10' style={{background:"red",margin:"50px 0px"}}>
 
         <h1 className='text-center lg:text-[50px] sm:text-[40px] text-[30px] font-bold py-[40px]'>
           Our Product
         </h1>
+        {user.map((value,index)=><li key={index}>{user}</li>)}
         <div className='max-w-[1320px] mx-auto grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-[30px]'>
           {
 
             products.map((data, index) => {
               return (
-                <ProductItems pData={data}  />
+                <ProductItems pData={data} key={index}  />
               )
             })
 
