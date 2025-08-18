@@ -1,62 +1,189 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Header from '../../Common/Header'
 import { Link } from 'react-router'
-
+import { cartContext } from '../../MainContext'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss' //npm install -D sass-embedded
 export default function Cart() {
+
+  let { cart, setCart } = useContext(cartContext)
+
+  let finalTotal = cart.reduce((sum, item) => sum + (item.qty * item.price), 0)
+
+
+  let shippingprice = 100 // Order Total  less then 500
   return (
     <>
       <Header></Header>
 
       <section className='p-10 bg-white mt-15 shadow-lg'>
-        <div className='grid lg:grid-cols-[60%_auto] grid-cols- gap-10'>
-            <div>
-                <div className='flex justify-between shadow-lg p-5'>
-                    <h1 className='text-start font-bold text-3xl'>Shopping Cart</h1>
-                    <h1 className='text-start font-bold text-3xl'>0 Items</h1>              
-                </div>
-                <div className='flex text-start gap-30 text-[15px] mt-20'>
-                    <div className=''>PRODUCT DETAILS</div>
-                    <div>QUANTITY</div>
-                    <div>PRICE</div>
-                    <div>TOTAL</div>
-                </div>
-                <div className='mt-5 text-start text-blue-700 font-bold'>
-                    <Link to="/">Continue Shopping</Link>
-                </div>
+
+        <div className="container mx-auto mt-10">
+          <div className="flex shadow-md my-10">
+            <div className="w-3/4 bg-white px-10 py-10">
+              <div className="flex justify-between border-b pb-8">
+                <h1 className="font-semibold text-2xl">Shopping Cart</h1>
+                <h2 className="font-semibold text-2xl">3 Items</h2>
+              </div>
+              <div className="flex mt-10 mb-5">
+                <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">Product Details</h3>
+                <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Quantity</h3>
+                <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Price</h3>
+                <h3 className="font-semibold  text-gray-600 text-xs uppercase w-1/5 text-center">Total</h3>
+              </div>
+
+              {
+                cart.length >= 1 ?
+
+                  cart.map((item, index) => {
+                    return (
+
+                      <CartRow item={item} key={index} />
+                    )
+                  })
+
+                  :
+                  <div> No Data Found in Cart </div>
+              }
+
+
+
+              <a href="#" className="flex font-semibold text-indigo-600 text-sm mt-10">
+
+                <svg className="fill-current mr-2 text-indigo-600 w-4" viewBox="0 0 448 512"><path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" /></svg>
+                Continue Shopping
+              </a>
             </div>
-            
-            <div>
-                <h1 className='text-start font-bold text-3xl mx-2 shadow-lg p-5'>Order Summary</h1>
-                <div className='flex mt-20 justify-between font-bold text-[16px]'>
-                    <div>ITEMS 0</div>
-                    <div>Rs. 0</div>
-                </div> 
-                <div className='text-start mt-5 font-semibold'>SHIPPING</div> 
-                <div className='text-start mt-5'>
-                    <form>
-                       <select className='w-full p-2'>
-                          <option>Standard Shipping - Rs. 100</option>
-                       </select>
-                    </form>
+
+            <div id="summary" className="w-1/4 px-8 py-10">
+              <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
+              <div className="flex justify-between mt-10 mb-5">
+                <span className="font-semibold text-sm uppercase">Items 3</span>
+                <span className="font-semibold text-sm">590$</span>
+              </div>
+              <div>
+                <label className="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
+                <select className="block p-2 text-gray-600 w-full text-sm">
+                  <option>Standard shipping - Rs {shippingprice}</option>
+                </select>
+              </div>
+              <div className="py-10">
+                <label for="promo" className="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
+                <input type="text" id="promo" placeholder="Enter your code" className="p-2 text-sm w-full" />
+              </div>
+              <button className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button>
+              <div className="border-t mt-8">
+                <div className="flex font-semibold justify-between py-6 text-sm uppercase">
+                  <span>Total cost</span>
+                  <span> Rs {finalTotal < 500 ? finalTotal + shippingprice : finalTotal}  </span>
                 </div>
-               <div className='text-start mt-5 font-semibold'>PROMO CODE</div> 
-                  <div className='mt-5 text-start'>
-                    <input type="text" placeholder="Enter Your Code" className='w-full p-2 pb-3 bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800'></input>
-                  </div>
-                  <div className='mt-5 text-start shadow-lg p-3'>
-                    <button className='bg-red-500 text-white font-bold p-3 '>APPLY</button>
-                  </div>
-                  <div className='flex mt-20 justify-between font-bold text-[14px]'>
-                    <div>TOTAL COST</div>
-                    <div>Rs. 0</div>
-                  </div> 
-                  <div className='mt-5'>
-                      <button className='bg-indigo-500 text-white p-3 w-full'>CHECK OUT</button>
-                  </div>
-               </div> 
-              
+                <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+              </div>
+            </div>
+
+          </div>
         </div>
+
+
+
       </section>
     </>
+  )
+}
+
+
+function CartRow({ item }) {
+  let { cart, setCart } = useContext(cartContext)
+
+  let deleteCartItem = () => {
+    Swal.fire({
+      title: "Are you sure want to delete?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        setCart(cart.filter((obj) => obj.pid != item.pid))
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your Item has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+
+    
+  }
+
+  let changeQty=(type)=>{
+    if(type=="+"){
+        if(item.qty<10){
+           let changeMyQty=cart.filter((obj)=>{
+               if(obj.pid==item.pid){
+                    obj['qty']= item.qty +1
+               }
+               return obj
+           })
+           setCart(changeMyQty)
+        }
+    }
+    else{
+        if(item.qty>1){
+           let changeMyQty=cart.filter((obj)=>{
+               if(obj.pid==item.pid){
+                    obj['qty']= item.qty -1
+               }
+
+               return obj
+           })
+           setCart(changeMyQty)
+        }
+        else{
+
+        }
+    }
+  }
+
+  return (
+    <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+      <div className="flex w-2/5">
+        <div className="w-20">
+          <img className="h-24" src={item.image} alt="" />
+        </div>
+        <div className="flex flex-col justify-between ml-4 flex-grow">
+          <span className="font-bold text-sm">
+            {item.pid}  {item.name}
+          </span>
+
+          <a onClick={deleteCartItem} href="#" className="font-semibold hover:text-red-500 text-gray-500 text-xs">Remove</a>
+        </div>
+      </div>
+      <div className="flex justify-center w-1/5">
+        <svg onClick={()=>changeQty("-")} className="fill-current text-gray-600 w-3" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
+        </svg>
+
+        <input className="mx-2 border text-center w-8" type="text"
+        
+        value={item.qty} />
+
+        <svg onClick={()=>changeQty("+")} className="fill-current text-gray-600 w-3" viewBox="0 0 448 512">
+          <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
+        </svg>
+      </div>
+      <span className="text-center w-1/5 font-semibold text-sm">
+        Rs  {item.price}
+      </span>
+      <span className="text-center w-1/5 font-semibold text-sm">
+        Rs {item.price * item.qty}
+
+
+
+      </span>
+    </div>
   )
 }

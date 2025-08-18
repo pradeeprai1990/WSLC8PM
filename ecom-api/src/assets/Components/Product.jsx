@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from '../../Common/Header'
 import axios from 'axios'
 import 'react-responsive-pagination/themes/classic-light-dark.css';
 import ResponsivePagination from 'react-responsive-pagination';
+import { cartContext } from '../../MainContext';
+import { useNavigate } from 'react-router';
 export default function Product() {
     let [category, setCategory] = useState([])
     let [brand, setBrand] = useState([])
@@ -105,7 +107,7 @@ export default function Product() {
     //Filter
     useEffect(() => {
         getProducts()
-    }, [sorting, categoryfillter, brandFilter, priceFilter, rating,currentPage])
+    }, [sorting, categoryfillter, brandFilter, priceFilter, rating, currentPage])
 
 
     let getAllCheck = (e, stateName, stateFunction) => {
@@ -358,15 +360,15 @@ export default function Product() {
                             }
 
 
-                           
+
 
 
                         </div>
                         <ResponsivePagination
-                                current={currentPage} //1
-                                total={totalPages}
-                                onPageChange={setCurrentPage}
-                            />
+                            current={currentPage} //1
+                            total={totalPages}
+                            onPageChange={setCurrentPage}
+                        />
                     </div>
 
                 </div>
@@ -378,14 +380,41 @@ export default function Product() {
 
 
 export function ProductItems({ data }) {
+
+    let  navigate=useNavigate()
+    let { cart, setCart } = useContext(cartContext)
+    let checkIteminCart = cart.find((item) => item.pid == data.id)
+    // let l=[{},{},{},{}] //Find,filter
+    let addTocart = () => {
+            let cartObj = {
+                pid: data.id,
+                name: data.name,
+                price: data.price,
+                image: data.image,
+                qty: 1
+            }
+            setCart([cartObj,...cart])
+            
+            setTimeout(()=>{
+                navigate('/cart')
+            },2000)
+
+    }
     return (
-        <div className='shadow-lg border-1 '>
+        <div className='shadow-lg border-1 pb-2 '>
             <img src={data.image} alt="" />
             <h3 className='font-bold p-2'>
                 {data.name}
                 <p> Rs {data.price}</p>
             </h3>
-            <p className='p-3 text-[12px]'>the essence mascara lash princess is a popular mascara known for its volumizing and lengthening effects. achieve dramatic lashes with this long-lasting and cruelty-free formula.</p>
+            {
+                checkIteminCart 
+                ?
+                <button className='bg-red-500 p-2 block mx-auto'>Delete Cart</button>
+                :
+                <button onClick={addTocart} className='bg-green-500 p-2 block mx-auto' >Add to Cart</button>
+            }
+            
         </div>
     )
 }
