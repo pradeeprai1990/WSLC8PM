@@ -4,13 +4,16 @@ import HomeCollection from "./components/home/HomeCollection";
 import HomeProduct from "./components/home/HomeProduct";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-export default function Home() {
+import { bannerApi } from "./api-services/homeServices";
+export default async  function Home() {
 
-  //Data Call Using API //Props
-  //Home Page
+  let bannerData=await bannerApi()
+
+  
+
   return (
     <>
-      <HomeBanner />
+      <HomeBanner bannerData={bannerData}  />
       <HomeCollection />
       <HomeProduct />
     </>
