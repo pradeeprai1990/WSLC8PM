@@ -1,11 +1,22 @@
-"use client"
-import { useParams } from 'next/navigation'
-import React from 'react'
 
-export default function ProductDetails() {
-  let data  =useParams()
-  console.log(data); //{ id:1 }
+import { singleProduct } from '@/app/api-services/productServices';
+import Breadcrumb from '@/app/common/Breadcrumb';
+import React from 'react'
+import ProductDetailsView from './ProductDetails';
+
+export  default async function ProductDetails( data ) {
+
+   let {id}=await data.params; //object { id:5 }
+
+  let productData=await singleProduct(id)
+
+  
+ 
   return (
-    <div>page</div>
+     productData && <>
+        <Breadcrumb pageName={productData.title} />
+        <ProductDetailsView data={productData} />
+
+     </>
   )
 }

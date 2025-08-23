@@ -6,4 +6,12 @@ let getProduct=()=>{
     .then((finalRes)=>finalRes.products)
    } 
 
- export {getProduct}
+
+  let singleProduct=(id)=>{
+
+     return axios.get(`https://dummyjson.com/products/${id}`)
+    .then((res)=>res.data)
+    .then((finalRes)=> finalRes )
+  
+  }
+ export {getProduct,singleProduct}
